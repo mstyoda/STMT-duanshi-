@@ -1,0 +1,201 @@
+\documentclass[12pt,twosidep]{article}
+\usepackage{amsmath}
+\usepackage{CJK}
+\usepackage{verbatim}
+\usepackage{indentfirst}
+\usepackage{verbatim}
+\usepackage{syntonly}
+\usepackage{multirow}
+\usepackage{mathrsfs}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{verbatim}
+\usepackage{CJK}
+\usepackage{indentfirst}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{syntonly}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{ulem}
+\usepackage{fancyhdr}
+\usepackage{subfigure}
+\usepackage[CJKbookmarks=true, colorlinks, linkcolor=black, anchorcolor=black, citecolor=blackp, urlcolor=black]{hyperref}
+\usepackage{graphicx}
+\usepackage[top = 1.5in, bottom = 1.5in, left = 1.2in, right = 1.2in]{geometry}
+\usepackage{paralist}
+\usepackage{diagbox}
+\usepackage{xcolor}
+\lstset{
+    numbers=left,
+    numberstyle= \tiny,
+    keywordstyle= \color{ blue!70},
+    commentstyle= \color{red!50!green!50!blue!50},
+    frame=shadowbox, % 阴影效果
+    rulesepcolor= \color{ red!20!green!20!blue!20} ,
+    escapeinside=``, % 英文分号中可写入中文
+    xleftmargin=2em,xrightmargin=2em, aboveskip=1em,
+    framexleftmargin=2em,
+    extendedchars=false
+}
+
+
+\begin{document}
+\begin{CJK*}{GBK}{song}
+\hypersetup{CJKbookmarks = true}
+\pagestyle{fancy}
+
+\let\enumerate\compactenum
+\let\endenumerate\endcompactenum
+\let\itemize\compactitem
+\let\enditemize\endcompactitem
+\setlength{\pltopsep}{5pt}
+
+\newcommand{\graph}[2]{
+    {\noindent
+    \begin{minipage}{\textwidth}
+        \centering
+        \includegraphics[width=#1]{#2}
+        \label{fig:non:float}
+    \end{minipage}
+    }
+}
+
+\setlength{\parindent}{2em}
+\setlength{\footskip}{30pt}
+\setlength{\baselineskip}{1.3\baselineskip}
+\title {{\textbf{短时傅里叶变换\,作业}}}
+
+\author{计54\,\,\, 骆轩源  \,\,\,2015011340\footnote{luoxy15@mails.tsinghua.edu.cn}}
+\date{}
+\maketitle
+%\tableofcontents
+\section{题\,目\,综\,述}
+信号：
+\begin{equation}
+    x(t) =
+    \begin{cases}
+        \cos(2\pi 5 t) + 2 \sin(2 \pi 15 t) & 0s \leq t < 5s\\
+        \cos(2\pi 20 t) & 5s \leq t < 10s\\
+        \cos(2\pi 30 t) + 0.6 \sin(2 \pi 45 t) &10s \leq t < 15s\\
+        \sin(2 \pi 50 t) & 15s \leq t < 20s
+    \end{cases}
+\end{equation}
+
+\begin{equation}
+    STFT^W_T(t',f) = \int_{-\infty}^{\infty}{x(t) w^{*}(t - t') \exp(-2 j \pi f t) d t}
+\end{equation}
+
+其中:
+\begin{equation}
+  w(t) = \exp{\frac{-t^2}{2\delta^2}}
+\end{equation}
+
+\section{对x(t)进行FT}
+使用matlab的fourier函数即可，得到的FT之后的$\left \|F(w)\right\|$关于角频率$w$的图像为如Fig\ref{FT} 所示：
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.6]{FT.jpg}
+    \caption{FT(x(t))图像\label{FT}}
+\end{figure}
+
+\section{对x(t)进行STFT}
+使用matlab的spectrogram函数，先对输入信号进行离散采样，采样频率为$1000HZ > 100HZ$，故满足奈奎斯特抽样定理，共选择三组参数$\delta = 0.01$(见Fig\ref{delta2}，Fig\ref{delta23d})，$\delta = 5$(见Fig\ref{delta5}，Fig\ref{delta53d})和$\delta = 20$(见Fig\ref{delta20}，Fig\ref{delta203d})，分别作图。:
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.6]{delta2.jpg}
+    \caption{STFT(x(t))图像($\delta = 2$)\label{delta2}}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.35]{delta23d.jpg}
+    \caption{STFT(x(t))3d图像($\delta = 2$)\label{delta23d}}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.6]{delta5.jpg}
+    \caption{STFT(x(t))图像($\delta = 5$)\label{delta5}}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.35]{delta53d.jpg}
+    \caption{STFT(x(t))3d图像($\delta = 5$)\label{delta53d}}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.6]{delta20.jpg}
+    \caption{STFT(x(t))图像($\delta = 20$)\label{delta20}}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.35]{delta203d.jpg}
+    \caption{STFT(x(t))3d图像($\delta = 20$)\label{delta203d}}
+\end{figure}
+
+\section{在实数区间FT}
+将积分区间变成0.1s 到1.0s，也即将原函数将原函数乘以一个只在0.1 到1.0取1的窗函数，再做FT(结果如Fig\ref{ft(10to1000)}所示)：
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.6]{ft(10to1000).jpg}
+    \caption{FT(x(t))图像(100ms 到1000ms)\label{ft(10to1000)}}
+\end{figure}
+
+相当于截取原信号0.1s 到1.0s，进行了傅里叶变换，相比于原频谱，只剩下两条线，对应$f = 5$和$f = 15$。 这样的操作相当于在一个小时间片上进行傅里叶变换，就可以得到在这个时间片上频谱。
+
+\section{以Gabor函数替代}
+这其实需要一些技巧，因为直接使用matlab，求原积分是求不出来的。 所以需要枚举公式中的$m$，然后就只有一个自变量$f$，式子如下：
+\begin{equation}
+\begin{split}
+    G(f) &= \int_{-\infty}^{\infty}{x(t) e^{-0.5\frac{(t - m)^2}{s^2}} \cos(2 \pi f (t - m)) dt}\\
+         &= \int_{-\infty}^{\infty}{x(t + m) e^{-0.5\frac{t^2}{s^2}} \cos(2 \pi f (t)) dt}\\
+         &= \frac{1}{2}(\mathscr{F} \left(x(t + m) e^{-0.5\frac{t^2}{s^2}}\right) + \mathscr{F}^{*} \left(x(t + m) e^{-0.5\frac{t^2}{s^2}}\right))
+\end{split}
+\end{equation}
+
+在[0,20]均匀取200个$m$，每个$m$做一次FFT，每次FFT在频谱上取2500个点，即可绘制图像。 一共取了3组参数，$s = 0.15$(Fig\ref{gabor015},Fig\ref{gabor3d015})，$s = 0.2$(Fig\ref{gabor02},Fig\ref{gabor3d02}) 和$s = 2$(Fig\ref{gabor2},Fig\ref{gabor3d2})。 与STFT相比，二者都可以准确地描述频率随时间变化的关系，从3d图上可以看出，Gabor变换的图像更加平滑，抖动更少，这一点也可以从俯视图看出。
+
+STFT变换的俯视图有一个规律，就是当频率线条“变细”的时候，周围的条纹就会多(其他时间上的频域分量的干扰)，也即想要精确描述频率的时候，时间就很难测准。 而Gabor变换就没有这个问题。
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.55]{gabor015.jpg}
+    \caption{Gabor变换图像($s = 0.15$)\label{gabor015}}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.55]{gabor02.jpg}
+    \caption{Gabor变换图像($s = 0.2$)\label{gabor02}}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.55]{gabor2.jpg}
+    \caption{Gabor变换图像($s = 2$)\label{gabor2}}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.35]{gabor3d015.jpg}
+    \caption{Gabor变换3d图像($s = 0.15$)\label{gabor3d015}}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.35]{gabor3d02.jpg}
+    \caption{Gabor变换3d图像($s = 0.2$)\label{gabor3d02}}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale = 0.35]{gabor3d2.jpg}
+    \caption{Gabor变换3d图像($s = 2$)\label{gabor3d2}}
+\end{figure}
+\end{CJK*}
+\end{document}
